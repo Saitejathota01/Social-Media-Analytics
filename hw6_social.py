@@ -69,7 +69,13 @@ Parameters: str
 Returns: str
 '''
 def parseState(fromString):
-    return
+    for line in fromString.split("\n"):
+        a=line.find("from ") + len("from")
+        line=line[a:]
+        b=line.find(")")
+        line=line[:b]
+        line=line.strip()
+    return line
 
 
 '''
@@ -282,7 +288,8 @@ if __name__ == "__main__":
     #test.runWeek1()
     #test.testMakeDataFrame()
     #test.testParseName()
-    test.testParsePosition()
+    #test.testParsePosition()
+    test.testParseState()
 
     ## Uncomment these for Week 2 ##
     """print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
