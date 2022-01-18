@@ -4,6 +4,7 @@ Name:
 Roll Number:
 """
 
+from urllib.parse import _SplitResultBase
 import hw6_social_tests as test
 
 project = "Social" # don't edit this
@@ -118,7 +119,23 @@ Parameters: dataframe ; dataframe
 Returns: None
 '''
 def addColumns(data, stateDf):
-    return
+    names=[]
+    position=[]
+    hashtags=[]
+    state=[]
+    region=[]
+    for i,j in data.iterrows():
+        names.append(parseName(j["label"]))
+        position.append(parsePosition(j["label"]))
+        state.append(parseState(j["label"]))
+        region.append(getRegionFromState(stateDf,parseState(j["label"])))
+        hashtags.append(findHashtags(j["text"]))
+    data['name']=names
+    data['position']=position
+    data['hashtags']=hashtags
+    data['state']=state    
+    data['region']=region
+    return None
 
 
 ### PART 2 ###
@@ -304,7 +321,8 @@ if __name__ == "__main__":
     #test.testParsePosition()
     #test.testParseState()
     #test.testFindHashtags()
-    test.testGetRegionFromState()
+    #test.testGetRegionFromState()
+    test.testAddColumns()
 
     ## Uncomment these for Week 2 ##
     """print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
