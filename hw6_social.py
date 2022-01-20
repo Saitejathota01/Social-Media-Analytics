@@ -4,6 +4,7 @@ Name:
 Roll Number:
 """
 
+from ipaddress import collapse_addresses
 from urllib.parse import _SplitResultBase
 import hw6_social_tests as test
 
@@ -177,7 +178,18 @@ Parameters: dataframe ; str ; str
 Returns: dict mapping strs to ints
 '''
 def getDataCountByState(data, colName, dataToCount):
-    return
+    dict1={}
+    if len(colName)!=0 and len(dataToCount)!=0:
+        for i,j in data.iterrows():
+            if j["state"]not in dict1:
+                dict1[j["state"]]=0
+                dict1[j["state"]]+=1
+    if len(colName)==0 or len(dataToCount)==0:
+        for i,j in data.iterrows():
+            if j["state"] not in dict1:
+                dict1[j["state"]]=0
+                dict1[j["state"]]+=1             
+    return dict1
 
 
 '''
@@ -187,7 +199,16 @@ Parameters: dataframe ; str
 Returns: dict mapping strs to (dicts mapping strs to ints)
 '''
 def getDataForRegion(data, colName):
-    return
+    dictionary={}
+    for i,j in data.iterrows():
+        key=j["region"]
+        if key not in dictionary:
+            dictionary[key]={}
+        if j[colName] not in dictionary[key]:
+            dictionary[key][j[colName]]=1
+        else:
+            dictionary[key][j[colName]]+=1
+    return dictionary
 
 
 '''
@@ -332,13 +353,22 @@ if __name__ == "__main__":
     #test.testGetRegionFromState()
     #test.testAddColumns()
     #test.testFindSentiment()
-    test.testAddSentimentColumn()
+    #test.testAddSentimentColumn()
+    #test.testGetDataCountByState()
+    #test.testGetDataForRegion()
+
+
 
     ## Uncomment these for Week 2 ##
     """print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
     test.week2Tests()
     print("\n" + "#"*15 + " WEEK 2 OUTPUT " + "#" * 15 + "\n")
     test.runWeek2()"""
+    df = makeDataFrame("data/politicaldata.csv")
+    stateDf = makeDataFrame("data/statemappings.csv")
+    addColumns(df, stateDf)
+    addSentimentColumn(df)
+    test.testGetDataForRegion(df)
 
     ## Uncomment these for Week 3 ##
     """print("\n" + "#"*15 + " WEEK 3 OUTPUT " + "#" * 15 + "\n")
