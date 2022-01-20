@@ -5,6 +5,7 @@ Roll Number:
 """
 
 from ipaddress import collapse_addresses
+from tabnanny import check
 from urllib.parse import _SplitResultBase
 import hw6_social_tests as test
 
@@ -249,7 +250,19 @@ Parameters: dataframe ; str
 Returns: float
 '''
 def getHashtagSentiment(data, hashtag):
-    return
+    check=0
+    count=0
+    for a,b in data.iterrows():
+        if hashtag in findHashtags(b["text"]):
+            if b["sentiment"] =="positive":
+                count+=1
+            elif b["sentiment"] =="negative":
+                count-=1
+            elif b["sentiment"] =="neutral":
+                count+=0
+            check+=1
+    return count/check
+    
 
 
 ### PART 3 ###
@@ -381,7 +394,8 @@ if __name__ == "__main__":
     addSentimentColumn(df)
     #test.testGetDataForRegion(df)
     #test.testGetHashtagRates(df)
-    test.testMostCommonHashtags(df)
+    #test.testMostCommonHashtags(df)
+    test.testGetHashtagSentiment(df)
 
     ## Uncomment these for Week 3 ##
     """print("\n" + "#"*15 + " WEEK 3 OUTPUT " + "#" * 15 + "\n")
