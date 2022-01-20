@@ -183,14 +183,15 @@ def getDataCountByState(data, colName, dataToCount):
     dict1={}
     if len(colName)!=0 and len(dataToCount)!=0:
         for i,j in data.iterrows():
-            if j["state"]not in dict1:
-                dict1[j["state"]]=0
+            if j[colName]==dataToCount:
+                if j["state"]not in dict1:
+                    dict1[j["state"]]=0
                 dict1[j["state"]]+=1
     if len(colName)==0 or len(dataToCount)==0:
         for i,j in data.iterrows():
             if j["state"] not in dict1:
                 dict1[j["state"]]=0
-                dict1[j["state"]]+=1             
+            dict1[j["state"]]+=1             
     return dict1
 
 
@@ -275,6 +276,7 @@ Parameters: dict mapping strs to ints ; str
 Returns: None
 '''
 def graphStateCounts(stateCounts, title):
+    #print(stateCounts)
     import matplotlib.pyplot as plt
     state=[a for a in stateCounts.keys()]
     number=[b for b in stateCounts.values()]
@@ -294,6 +296,13 @@ Parameters: dict mapping strs to ints ; dict mapping strs to ints ; int ; str
 Returns: None
 '''
 def graphTopNStates(stateCounts, stateFeatureCounts, n, title):
+    dictionary={}
+    for a,b in stateFeatureCounts.items():
+        for i,j in stateCounts.items():
+            if i==a:
+                dictionary[i]=b/j
+    new=mostCommonHashtags(dictionary, n)
+    graphStateCounts(new,title)
     return
 
 
@@ -378,17 +387,16 @@ if __name__ == "__main__":
     #test.week1Tests()
     #print("\n" + "#"*15 + " WEEK 1 OUTPUT " + "#" * 15 + "\n")
     #test.runWeek1()
-    #test.testMakeDataFrame()
-    #test.testParseName()
-    #test.testParsePosition()
-    #test.testParseState()
-    #test.testFindHashtags()
-    #test.testGetRegionFromState()
-    #test.testAddColumns()
-    #test.testFindSentiment()
-    #test.testAddSentimentColumn()
-    #test.testGetDataCountByState()
-    #test.testGetDataForRegion()
+    # test.testMakeDataFrame()
+    # test.testParseName()
+    # test.testParsePosition()
+    # test.testParseState()
+    # test.testFindHashtags()
+    # test.testGetRegionFromState()
+    # test.testAddColumns()
+    # test.testFindSentiment()
+    # test.testAddSentimentColumn()
+   
 
 
 
@@ -401,18 +409,16 @@ if __name__ == "__main__":
     stateDf = makeDataFrame("data/statemappings.csv")
     addColumns(df, stateDf)
     addSentimentColumn(df)
-    #test.testGetDataForRegion(df)
-    #test.testGetHashtagRates(df)
-    #test.testMostCommonHashtags(df)
-    #test.testGetHashtagSentiment(df)
+    # test.testGetDataCountByState(df)
+    # test.testGetDataForRegion(df)
+    # test.testGetDataForRegion(df)
+    # test.testGetHashtagRates(df)
+    # test.testMostCommonHashtags(df)
+    # test.testGetHashtagSentiment(df)
+
     
 
     ## Uncomment these for Week 3 ##
     """print("\n" + "#"*15 + " WEEK 3 OUTPUT " + "#" * 15 + "\n")
     test.runWeek3()"""
-    print("Prepare for a bunch of charts!")
-    df = makeDataFrame("data/politicaldata.csv")
-    stateDf = makeDataFrame("data/statemappings.csv")
-    addColumns(df, stateDf)
-    addSentimentColumn(df)
-    
+    test.runWeek3()
