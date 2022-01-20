@@ -5,6 +5,7 @@ Roll Number:
 """
 
 from ipaddress import collapse_addresses
+import numbers
 from tabnanny import check
 from urllib.parse import _SplitResultBase
 import hw6_social_tests as test
@@ -275,6 +276,14 @@ Returns: None
 '''
 def graphStateCounts(stateCounts, title):
     import matplotlib.pyplot as plt
+    state=[a for a in stateCounts.keys()]
+    number=[b for b in stateCounts.values()]
+    plt.bar(state, number, width=0.6)
+    plt.xticks(ticks=list(range(len(state))), labels=state, rotation="vertical")
+    plt.xlabel("States")
+    plt.ylabel("Values of states")
+    plt.title(title)
+    plt.show()
     return
 
 
@@ -395,8 +404,15 @@ if __name__ == "__main__":
     #test.testGetDataForRegion(df)
     #test.testGetHashtagRates(df)
     #test.testMostCommonHashtags(df)
-    test.testGetHashtagSentiment(df)
+    #test.testGetHashtagSentiment(df)
+    
 
     ## Uncomment these for Week 3 ##
     """print("\n" + "#"*15 + " WEEK 3 OUTPUT " + "#" * 15 + "\n")
     test.runWeek3()"""
+    print("Prepare for a bunch of charts!")
+    df = makeDataFrame("data/politicaldata.csv")
+    stateDf = makeDataFrame("data/statemappings.csv")
+    addColumns(df, stateDf)
+    addSentimentColumn(df)
+    
