@@ -8,6 +8,7 @@ from ipaddress import collapse_addresses
 import numbers
 from tabnanny import check
 from urllib.parse import _SplitResultBase
+from xml.sax.handler import feature_external_ges
 import hw6_social_tests as test
 
 project = "Social" # don't edit this
@@ -313,6 +314,23 @@ Parameters: dict mapping strs to (dicts mapping strs to ints) ; str
 Returns: None
 '''
 def graphRegionComparison(regionDicts, title):
+    feature=[]
+    region=[]
+    regionfeatures=[]
+    for a in regionDicts:
+        for b in regionDicts[a]:
+            if b not in feature:
+                feature.append(b)
+        region.append(a)
+    for a in regionDicts:
+        temp=[]
+        for b in feature:
+            if b not in regionDicts[a]:
+                temp.append(0)
+            else:
+                temp.append(regionDicts[a][b])
+        regionfeatures.append(temp)
+    sideBySideBarPlots(feature, region, regionfeatures, title)
     return
 
 
@@ -323,6 +341,7 @@ Parameters: dataframe
 Returns: None
 '''
 def graphHashtagSentimentByFrequency(data):
+    
     return
 
 
